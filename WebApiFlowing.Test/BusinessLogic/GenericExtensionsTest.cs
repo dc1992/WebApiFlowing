@@ -38,7 +38,7 @@ namespace WebApiFlowing.Test.BusinessLogic
         public void ListDoesNotContainExpectedElemenets_ShouldThrowArgumentNullException()
         {
             var listObjects = new List<object>();
-            Assert.Throws<ArgumentNullException>(() => listObjects.ShouldContainAtLeast(2));
+            Assert.Throws<ArgumentOutOfRangeException>(() => listObjects.ShouldContainAtLeast(2));
         }
     }
 }

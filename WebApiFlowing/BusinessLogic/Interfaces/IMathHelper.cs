@@ -7,6 +7,6 @@ namespace WebApiFlowing.BusinessLogic.Interfaces
     {
         LinearEquation CalculateLinearLeastSquares(ICollection<Point> points);
 
-        double FindXByY(LinearEquation linearEquation, double x);
+        double FindXByY(LinearEquation linearEquation, double y);
     }
 }

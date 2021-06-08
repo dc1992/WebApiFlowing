@@ -10,7 +10,7 @@ namespace WebApiFlowing.BusinessLogic
     public class WeightCalculator : IWeightCalculator
     {
         private IMathHelper _mathHelper;
-        private const int MinimumNumberForCalculateALinearEquation = 2;
+        private const int MinimumNumberForEstimation = 2;
 
         public WeightCalculator(IMathHelper mathHelper)
         {
@@ -19,7 +19,7 @@ namespace WebApiFlowing.BusinessLogic
 
         public DateTimeOffset EstimateTargetDate(User user)
         {
-            user.WeightHistories.ShouldContainAtLeast(MinimumNumberForCalculateALinearEquation);
+            user.WeightHistories.ShouldContainAtLeast(MinimumNumberForEstimation);
 
             var orderedWeights = user.WeightHistories
                 .OrderBy(wh => wh.DateOfMeasurement)

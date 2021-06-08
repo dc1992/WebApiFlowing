@@ -22,7 +22,7 @@ namespace WebApiFlowing.Test.BusinessLogic
         public void EmptyUser_EstimateTargetDate_ShouldThrowArgumentNullException()
         {
             var user = new User();
-            Assert.Throws<ArgumentNullException>(() => _weightCalculator.EstimateTargetDate(user));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTargetDate(user));
         }
 
         [Test]

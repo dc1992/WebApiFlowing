@@ -15,7 +15,7 @@ namespace WebApiFlowing.BusinessLogic.Extensions
         public static void ShouldContainAtLeast<T>(this IEnumerable<T> source, int numberOfElements)
         {
             if (source == null || source.Count() < numberOfElements)
-                throw new ArgumentNullException($"{typeof(T)} must contain at least {numberOfElements} elements");
+                throw new ArgumentOutOfRangeException($"{typeof(T)} must contain at least {numberOfElements} elements");
         }
     }
 }
