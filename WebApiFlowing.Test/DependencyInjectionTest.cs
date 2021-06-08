@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
+using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
 
 namespace WebApiFlowing.Test
@@ -31,6 +32,18 @@ namespace WebApiFlowing.Test
         public void Startup_ShouldHaveIUserRepositoryRegistered()
         {
             Assert.IsNotNull(_host.Services.GetRequiredService<IUserRepository>());
+        }
+
+        [Test]
+        public void Startup_ShouldHaveIWeightCalculatorRegistered()
+        {
+            Assert.IsNotNull(_host.Services.GetRequiredService<IWeightCalculator>());
+        }
+
+        [Test]
+        public void Startup_ShouldHaveIMathHelperRegistered()
+        {
+            Assert.IsNotNull(_host.Services.GetRequiredService<IMathHelper>());
         }
     }
 }

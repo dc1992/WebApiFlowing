@@ -8,14 +8,14 @@ using WebApiFlowing.DTOs;
 namespace WebApiFlowing.Test.Controllers
 {
     [TestFixture]
-    public class UserWeightTargetDateControllerTest : BaseTest
+    public class EstimatedDateForReachingWeightTest : BaseTest
     {
-        private UserWeightTargetDateController _controller;
+        private EstimatedDateForReachingWeightController _controller;
         
         [SetUp]
         public void Setup()
         {
-            _controller = new UserWeightTargetDateController(_userRepository);
+            _controller = new EstimatedDateForReachingWeightController(_userRepository, _weightCalculator);
         }
 
         [Test]
@@ -34,6 +34,15 @@ namespace WebApiFlowing.Test.Controllers
 
             Assert.ThrowsAsync<ArgumentNullException>(async () => 
                 await _controller.Get(_defaultUserGuid));
+        }
+
+        [Test]
+        public async Task ExistingUser_ShouldEstimateDate()
+        {
+            await _controller.Get(_defaultUserGuid);
+
+            A.CallTo(() => _userRepository.GetUserInfosBy(_defaultUserGuid)).MustHaveHappened();
+            A.CallTo(() => _weightCalculator.EstimateTargetDate(A<User>._)).MustHaveHappened();
         }
     }
 }

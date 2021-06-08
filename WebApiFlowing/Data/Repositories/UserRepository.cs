@@ -22,7 +22,16 @@ namespace WebApiFlowing.Data.Repositories
                 .AsNoTracking()
                 .Select(u => new User
                 {
-                    Guid = u.Guid
+                    Guid = u.Guid,
+                    DesiredWeightInKgs = u.DesiredWeightInKgs,
+                    HeightInMeters = u.HeightInMeters,
+                    Name = u.Name,
+                    Surname = u.Surname,
+                    WeightHistories = u.WeightHistories.Select(wh => new WeightHistory
+                    {
+                        DateOfMeasurement = wh.DateOfMeasurement,
+                        WeightInKgs = wh.WeightInKgs
+                    }).ToList()
                 })
                 .SingleOrDefaultAsync(u => u.Guid == guid);
 

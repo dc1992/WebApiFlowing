@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using WebApiFlowing.BusinessLogic.Extensions;
 
@@ -21,6 +22,23 @@ namespace WebApiFlowing.Test.BusinessLogic
         {
             object nullObject = null;
             Assert.Throws<ArgumentNullException>(() => nullObject.ShouldNotBeNull());
+        }
+
+        [Test]
+        public void ListContainsExpectedElements_ShouldDoNothing()
+        {
+            var listObjects = new List<object>
+            {
+                1
+            };
+            Assert.DoesNotThrow(() => listObjects.ShouldContainAtLeast(1));
+        }
+
+        [Test]
+        public void ListDoesNotContainExpectedElemenets_ShouldThrowArgumentNullException()
+        {
+            var listObjects = new List<object>();
+            Assert.Throws<ArgumentNullException>(() => listObjects.ShouldContainAtLeast(2));
         }
     }
 }

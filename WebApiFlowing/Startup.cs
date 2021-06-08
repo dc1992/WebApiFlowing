@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using WebApiFlowing.BusinessLogic;
+using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data;
 using WebApiFlowing.Data.Interfaces;
 using WebApiFlowing.Data.Repositories;
@@ -33,6 +35,8 @@ namespace WebApiFlowing
             services.AddDbContext<WebApiFlowingDataContext>(dco => dco.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
             services.AddScoped<IDataContext>(spe => spe.GetService<WebApiFlowingDataContext>());
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IWeightCalculator, WeightCalculator>();
+            services.AddTransient<IMathHelper, MathHelper>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

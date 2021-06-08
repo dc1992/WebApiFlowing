@@ -2,19 +2,22 @@
 using System;
 using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
+using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
 
 namespace WebApiFlowing.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserWeightTargetDateController : ControllerBase
+    public class EstimatedDateForReachingWeightController : ControllerBase
     {
         private IUserRepository _userRepository;
+        private IWeightCalculator _weightCalculator;
 
-        public UserWeightTargetDateController(IUserRepository userRepository)
+        public EstimatedDateForReachingWeightController(IUserRepository userRepository, IWeightCalculator weightCalculator)
         {
             _userRepository = userRepository;
+            _weightCalculator = weightCalculator;
         }
 
         [HttpGet]
@@ -23,7 +26,9 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            return new DateTimeOffset();
+            var estimatedDate = _weightCalculator.EstimateTargetDate(user);
+
+            return estimatedDate;
         }
     }
 }

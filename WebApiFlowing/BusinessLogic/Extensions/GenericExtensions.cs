@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApiFlowing.BusinessLogic.Extensions
 {
@@ -8,6 +10,12 @@ namespace WebApiFlowing.BusinessLogic.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException($"{typeof(T)} cannot be null");
+        }
+
+        public static void ShouldContainAtLeast<T>(this IEnumerable<T> source, int numberOfElements)
+        {
+            if (source == null || source.Count() < numberOfElements)
+                throw new ArgumentNullException($"{typeof(T)} must contain at least {numberOfElements} elements");
         }
     }
 }
