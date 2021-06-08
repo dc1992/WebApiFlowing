@@ -11,13 +11,11 @@ namespace WebApiFlowing.Test.Controllers
     public class UserWeightTargetDateControllerTest : BaseTest
     {
         private UserWeightTargetDateController _controller;
-        private Guid _defaultUserGuid;
-
+        
         [SetUp]
         public void Setup()
         {
             _controller = new UserWeightTargetDateController(_userRepository);
-            _defaultUserGuid = Guid.Parse("ae277024-e1a8-4e0b-a188-9ed15ab8ba71");
         }
 
         [Test]
