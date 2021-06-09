@@ -38,6 +38,7 @@ namespace WebApiFlowing
             services.AddTransient<IWeightCalculator, WeightCalculator>();
             services.AddTransient<IMathHelper, MathHelper>();
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiFlowing", Version = "v1" });
@@ -59,6 +60,12 @@ namespace WebApiFlowing
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseEndpoints(endpoints =>
             {
