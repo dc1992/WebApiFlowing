@@ -1,3 +1,5 @@
 #DATA STIMATA DI RAGGIUNGIMENTO PESO
 curl --location --request GET 'https://localhost:44391/EstimatedDateForReachingWeight?userGuid=35dacbf7-c939-4112-aa86-bee0792e37d3'
 
+#LISTA PESI
+curl --location --request GET 'https://localhost:44391/UserWeights?userGuid=35dacbf7-c939-4112-aa86-bee0792e37d3'
