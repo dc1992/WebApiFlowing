@@ -1,4 +1,4 @@
-﻿namespace WebApiFlowing.DTOs
+﻿namespace WebApiFlowing.DTOs.BusinessLogic
 {
     public class Point
     {

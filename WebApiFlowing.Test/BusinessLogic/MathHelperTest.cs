@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using FakeItEasy;
 using NUnit.Framework;
 using WebApiFlowing.BusinessLogic;
-using WebApiFlowing.DTOs;
+using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.Test.BusinessLogic
 {
