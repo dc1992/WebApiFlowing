@@ -18,6 +18,17 @@ namespace WebApiFlowing.Data
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<User>()
+                .HasIndex(x => x.Guid)
+                .HasDatabaseName("IX_Guid")
+                .IsUnique();
+
+            mb.Entity<WeightHistory>(entity =>
+            {
+                entity.HasIndex(e => new { e.DateOfMeasurement, e.UserId })
+                    .HasDatabaseName("UQ_DateAndUserId")
+                    .IsUnique();
+            });
         }
     }
 }

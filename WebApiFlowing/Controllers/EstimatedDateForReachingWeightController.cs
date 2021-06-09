@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
+using WebApiFlowing.DTOs.Controllers;
 
 namespace WebApiFlowing.Controllers
 {
@@ -21,14 +22,20 @@ namespace WebApiFlowing.Controllers
         }
 
         [HttpGet]
-        public async Task<DateTimeOffset> Get(Guid userGuid)
+        public async Task<EstimatedDateForReachingWeightResponse> Get(Guid userGuid)
         {
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
             var estimatedDate = _weightCalculator.EstimateTargetDate(user);
 
-            return estimatedDate;
+            var response = new EstimatedDateForReachingWeightResponse
+            {
+                EstimatedDate = estimatedDate,
+                DesiredWeightInKgs = user.DesiredWeightInKgs
+            };
+
+            return response;
         }
     }
 }

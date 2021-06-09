@@ -19,11 +19,9 @@ namespace WebApiFlowing.Test.Controllers
         }
 
         [Test]
-        public async Task Get_ShouldReturnDateTimeOffset()
+        public void ExistingUser_ShouldNotThrow()
         {
-            var response = await _controller.Get(_defaultUserGuid);
-
-            Assert.IsTrue(response is DateTimeOffset);
+            Assert.DoesNotThrowAsync(async () => await _controller.Get(_defaultUserGuid));
         }
 
         [Test]

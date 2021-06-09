@@ -60,9 +60,9 @@ namespace WebApiFlowing.IntegrationTest.Controllers
             }
 
             //test
-            var date = await _controller.Get(_defaultUserGuid);
+            var response = await _controller.Get(_defaultUserGuid);
 
-            Assert.AreEqual(DateTimeOffset.Now.AddDays(3).Date, date.Date);
+            Assert.AreEqual(DateTimeOffset.Now.AddDays(3).Date, response.EstimatedDate.Date);
         }
     }
 }
