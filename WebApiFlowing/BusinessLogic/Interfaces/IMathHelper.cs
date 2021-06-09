@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WebApiFlowing.DTOs;
+using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.BusinessLogic.Interfaces
 {

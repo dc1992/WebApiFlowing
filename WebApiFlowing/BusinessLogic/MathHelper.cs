@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
-using WebApiFlowing.DTOs;
+using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.BusinessLogic
 {

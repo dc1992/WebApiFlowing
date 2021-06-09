@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApiFlowing.DTOs.Controllers
+namespace WebApiFlowing.DTOs.Response
 {
     public class EstimatedDateForReachingWeightResponse
     {
