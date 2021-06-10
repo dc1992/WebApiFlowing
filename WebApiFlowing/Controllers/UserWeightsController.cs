@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs;
 using WebApiFlowing.DTOs.Response;
-using WeightHistory = WebApiFlowing.DTOs.Response.WeightHistory;
+using WeightHistory = WebApiFlowing.DTOs.WeightHistory;
 
 namespace WebApiFlowing.Controllers
 {
@@ -27,18 +27,19 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            var response = GetUserWeightsResponseFrom(user);
+            var response = GetUserWeightsResponseFrom(user.WeightHistories);
 
             return response;
         }
 
-        private UserWeightsResponse GetUserWeightsResponseFrom(User user)
+        private UserWeightsResponse GetUserWeightsResponseFrom(ICollection<WeightHistory> weightHistories)
         {
+            var orderedWeights = weightHistories.GetOrderedCollection();
+
             var response = new UserWeightsResponse
             {
-                WeightHistories = user.WeightHistories
-                    .OrderBy(wh => wh.DateOfMeasurement)
-                    .Select(wh => new WeightHistory
+                WeightHistories = orderedWeights
+                    .Select(wh => new DTOs.Response.WeightHistory
                     {
                         DateOfMeasurement = wh.DateOfMeasurement,
                         WeightInKgs = wh.WeightInKgs

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using WebApiFlowing.BusinessLogic;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
@@ -15,11 +13,13 @@ namespace WebApiFlowing.Controllers
     public class FirstAndLastTrendPointsController : ControllerBase
     {
         private IUserRepository _userRepository;
+        private IWeightCalculator _weightCalculator;
         private IMathHelper _mathHelper;
 
-        public FirstAndLastTrendPointsController(IUserRepository userRepository, IMathHelper mathHelper)
+        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightCalculator weightCalculator, IMathHelper mathHelper)
         {
             _userRepository = userRepository;
+            _weightCalculator = weightCalculator;
             _mathHelper = mathHelper;
         }
 
@@ -29,18 +29,10 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            //calculating linear equation to find the first and last trend points
-            var orderedWeights = user.WeightHistories
-                .OrderBy(wh => wh.DateOfMeasurement)
-                .ToList();
-
-            var points = orderedWeights.ToPoints();
-
-            var trendLinearEquation = _mathHelper.CalculateLinearLeastSquares(points);
-
+            var trendLinearEquation = _weightCalculator.CalculateTrend(user);
 
             //find x and y of first trend point
-            var firstWeighingDate = orderedWeights.GetFirstWeightingDate();
+            var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
             var firstTrendPointY = _mathHelper.FindZero(trendLinearEquation);
 
             //find x and y of last trend point

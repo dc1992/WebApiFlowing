@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.DTOs;
@@ -20,23 +18,26 @@ namespace WebApiFlowing.BusinessLogic
 
         public DateTimeOffset EstimateTargetDate(User user)
         {
-            user.WeightHistories.ShouldContainAtLeast(MinimumNumberForEstimation);
-
-            var orderedWeights = user.WeightHistories
-                .OrderBy(wh => wh.DateOfMeasurement)
-                .ToList();
-
-            var points = orderedWeights.ToPoints();
-
-            var linearEquation = _mathHelper.CalculateLinearLeastSquares(points);
+            var trend = CalculateTrend(user);
 
             //using the linear equation found, we can find the estimated day (X) starting from the desidered user weight (Y)
-            var daysFromStarting = _mathHelper.FindXByY(linearEquation, user.DesiredWeightInKgs);
+            var daysFromStarting = _mathHelper.FindXByY(trend, user.DesiredWeightInKgs);
 
-            var firstWeighingDate = orderedWeights.GetFirstWeightingDate();
+            var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
             var estimatedDate = firstWeighingDate.AddDays((int) daysFromStarting);
 
             return estimatedDate;
+        }
+
+        public LinearEquation CalculateTrend(User user)
+        {
+            user.WeightHistories.ShouldContainAtLeast(MinimumNumberForEstimation);
+
+            var points = user.WeightHistories.ToPoints();
+
+            var linearEquation = _mathHelper.CalculateLinearLeastSquares(points);
+
+            return linearEquation;
         }
     }
 }

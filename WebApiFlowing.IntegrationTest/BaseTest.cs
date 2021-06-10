@@ -1,5 +1,4 @@
 ﻿using System;
-using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using WebApiFlowing.BusinessLogic;

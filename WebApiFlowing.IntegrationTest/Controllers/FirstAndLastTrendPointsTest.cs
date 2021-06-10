@@ -16,7 +16,7 @@ namespace WebApiFlowing.IntegrationTest.Controllers
         [SetUp]
         public void Setup()
         {
-            _controller = new FirstAndLastTrendPointsController(_userRepository, _mathHelper);
+            _controller = new FirstAndLastTrendPointsController(_userRepository, _weightCalculator, _mathHelper);
         }
 
         [Test]

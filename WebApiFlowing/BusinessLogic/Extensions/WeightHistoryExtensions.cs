@@ -7,11 +7,22 @@ namespace WebApiFlowing.BusinessLogic.Extensions
 {
     public static class WeightHistoryExtensions
     {
-        public static DateTimeOffset GetFirstWeightingDate(this ICollection<WeightHistory> orderedWeights)
+        public static DateTimeOffset GetFirstWeightingDate(this ICollection<WeightHistory> weights)
         {
-            orderedWeights.ShouldContainAtLeast(1);
+            weights.ShouldContainAtLeast(1);
+
+            var orderedWeights = weights.GetOrderedCollection();
 
             return orderedWeights.First().DateOfMeasurement;
+        }
+
+        public static ICollection<WeightHistory> GetOrderedCollection(this ICollection<WeightHistory> source)
+        {
+            var orderedCollection = source
+                .OrderBy(wh => wh.DateOfMeasurement)
+                .ToList();
+
+            return orderedCollection;
         }
     }
 }
