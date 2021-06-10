@@ -1,22 +1,23 @@
 window.onload = async function () {
 
-    let baseUrl = 'http://localhost:60906';
-    let userGuid = '35dacbf7-c939-4112-aa86-bee0792e37d3';
+	let baseUrl = top.baseUrl;
+	let userGuid = top.userGuid;
 
     //fetch data from server
-    let estimatedDateUrl = getQueryStringUrl(`${baseUrl}/EstimatedDateForReachingWeight`, userGuid);
-    let estimatedDateResponse = await fetch(estimatedDateUrl);
-    let estimatedDateJson = await estimatedDateResponse.json();
+    let firstAndLastTrendPointsUrl = getQueryStringUrl(`${baseUrl}/FirstAndLastTrendPoints`, userGuid);
+    let firstAndLastTrendPointsResponse = await fetch(firstAndLastTrendPointsUrl);
+    let firstAndLastTrendPointsJson = await firstAndLastTrendPointsResponse.json();
 
     let userWeightsUrl = getQueryStringUrl(`${baseUrl}/UserWeights`, userGuid);
     let userWeightsResponse = await fetch(userWeightsUrl);
     let userWeightsJson = await userWeightsResponse.json();
 
     //calculate the trend points
-    let firstUserWeight = userWeightsJson.weightHistories[0];
-    let firstTrendPoint = { x: new Date(firstUserWeight.dateOfMeasurement), y: firstUserWeight.weightInKgs };
+    let firstPointFromResponse = firstAndLastTrendPointsJson.firstTrendPoint;
+    let firstTrendPoint = { x: new Date(firstPointFromResponse.x), y: firstPointFromResponse.y };
 
-    let lastTrendPoint = { x: new Date(estimatedDateJson.estimatedDate), y: estimatedDateJson.desiredWeightInKgs };
+    let lastPointFromResponse = firstAndLastTrendPointsJson.lastTrendPoint;
+    let lastTrendPoint = { x: new Date(lastPointFromResponse.x), y: lastPointFromResponse.y };
 
     //get every point to draw the graph
     let userWeightPoints = [];
