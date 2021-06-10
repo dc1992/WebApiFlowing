@@ -9,7 +9,7 @@ namespace WebApiFlowing.BusinessLogic
     public class MathHelper : IMathHelper
     {
         private const int MinimumNumberForCalculateALinearEquation = 2,
-            NumberOfDigitsAfterCommaInFunctions = 10;
+            NumberOfDigitsAfterCommaInFunctions = 5;
 
         public LinearEquation CalculateLinearLeastSquares(ICollection<Point> points)
         {
@@ -46,6 +46,14 @@ namespace WebApiFlowing.BusinessLogic
             var x = (y - linearEquation.B) / linearEquation.M;
 
             return x;
+        }
+
+        public double FindZero(LinearEquation linearEquation)
+        {
+            //we can ignore the mx since x is zero -> y = (linearEquation.M * 0) + b
+            var y = linearEquation.B;
+
+            return y;
         }
     }
 }

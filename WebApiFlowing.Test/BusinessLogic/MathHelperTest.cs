@@ -124,5 +124,17 @@ namespace WebApiFlowing.Test.BusinessLogic
 
             Assert.IsTrue(double.IsInfinity(result));
         }
+
+        [TestCase(1, 1)]
+        [TestCase(3, 3)]
+        [TestCase(5, 5)]
+        [TestCase(10, 10)]
+        public void FindZero_ShouldReturnExpectedSolution(double b, double expected)
+        {
+            var equation = new LinearEquation(1, b);
+            var solution = _mathHelper.FindZero(equation);
+
+            Assert.AreEqual(expected, solution);
+        }
     }
 }
