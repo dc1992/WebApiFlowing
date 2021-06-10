@@ -47,5 +47,13 @@ namespace WebApiFlowing.BusinessLogic
 
             return x;
         }
+
+        public double FindZero(LinearEquation linearEquation)
+        {
+            //we can ignore the mx since x is zero -> y = (linearEquation.M * 0) + b
+            var y = linearEquation.B;
+
+            return y;
+        }
     }
 }

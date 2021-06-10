@@ -2,8 +2,8 @@
 {
     public class FirstAndLastTrendPointsResponse
     {
-        public WeightHistory FirstTrendPoint { get; set; }
+        public TrendPoint FirstTrendPoint { get; set; }
 
-        public WeightHistory LastTrendPoint { get; set; }
+        public TrendPoint LastTrendPoint { get; set; }
     }
 }

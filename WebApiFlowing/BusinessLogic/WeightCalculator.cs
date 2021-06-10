@@ -26,37 +26,17 @@ namespace WebApiFlowing.BusinessLogic
                 .OrderBy(wh => wh.DateOfMeasurement)
                 .ToList();
 
-            var firstWeighingDate = orderedWeights.First().DateOfMeasurement;
-
-            var points = TurnUserWeightsInPoints(orderedWeights, firstWeighingDate);
+            var points = orderedWeights.ToPoints();
 
             var linearEquation = _mathHelper.CalculateLinearLeastSquares(points);
 
             //using the linear equation found, we can find the estimated day (X) starting from the desidered user weight (Y)
             var daysFromStarting = _mathHelper.FindXByY(linearEquation, user.DesiredWeightInKgs);
 
+            var firstWeighingDate = orderedWeights.GetFirstWeightingDate();
             var estimatedDate = firstWeighingDate.AddDays((int) daysFromStarting);
 
             return estimatedDate;
-        }
-
-        private ICollection<Point> TurnUserWeightsInPoints(ICollection<WeightHistory> weights, DateTimeOffset firstWeighingDate)
-        {
-            //a point is composed by X -> number of days since the first weighing, Y -> value of the weighing in kgs
-
-            var points = new List<Point>();
-            foreach (var weightHistory in weights)
-            {
-                var point = new Point
-                {
-                    X = (weightHistory.DateOfMeasurement - firstWeighingDate).TotalDays,
-                    Y = weightHistory.WeightInKgs
-                };
-
-                points.Add(point);
-            }
-
-            return points;
         }
     }
 }

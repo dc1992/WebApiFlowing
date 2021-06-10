@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
 using WebApiFlowing.Controllers;
@@ -14,13 +16,45 @@ namespace WebApiFlowing.Test.Controllers
         [SetUp]
         public void Setup()
         {
-            _controller = new FirstAndLastTrendPointsController(_userRepository);
+            _controller = new FirstAndLastTrendPointsController(_userRepository, _mathHelper);
         }
 
         [Test]
-        public void ExistingUser_ShouldNotThrow()
+        public async Task ExistingUser_ShouldReturnExpected()
         {
-            Assert.DoesNotThrowAsync(async () => await _controller.Get(_defaultUserGuid));
+            //setup
+            var firstWeight = new WeightHistory
+            {
+                DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                WeightInKgs = 100
+            };
+            
+            var secondWeight = new WeightHistory
+            {
+                DateOfMeasurement = DateTimeOffset.Now.AddDays(-1),
+                WeightInKgs = 90
+            };
+
+            var user = new User
+            {
+                Guid = _defaultUserGuid,
+                DesiredWeightInKgs = 80,
+                WeightHistories = new List<WeightHistory>
+                {
+                    firstWeight,
+                    secondWeight
+                }
+            };
+
+            A.CallTo(() => _userRepository.GetUserInfosBy(_defaultUserGuid))
+                .Returns(user);
+
+            //test
+            var result = await _controller.Get(_defaultUserGuid);
+
+            //assert
+            Assert.AreEqual(firstWeight.DateOfMeasurement, result.FirstTrendPoint.X);
+            Assert.AreEqual(user.DesiredWeightInKgs, result.LastTrendPoint.Y);
         }
 
         [Test]
