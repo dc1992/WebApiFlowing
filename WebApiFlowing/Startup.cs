@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using WebApiFlowing.BusinessLogic;
+using WebApiFlowing.BusinessLogic.Interfaces;
+using WebApiFlowing.Data;
+using WebApiFlowing.Data.Interfaces;
+using WebApiFlowing.Data.Repositories;
 
 namespace WebApiFlowing
 {
@@ -26,8 +26,13 @@ namespace WebApiFlowing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<WebApiFlowingDataContext>(dco => dco.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
+            services.AddScoped<IDataContext>(spe => spe.GetService<WebApiFlowingDataContext>());
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IWeightCalculator, WeightCalculator>();
+            services.AddTransient<IMathHelper, MathHelper>();
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiFlowing", Version = "v1" });
@@ -49,6 +54,12 @@ namespace WebApiFlowing
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseEndpoints(endpoints =>
             {
