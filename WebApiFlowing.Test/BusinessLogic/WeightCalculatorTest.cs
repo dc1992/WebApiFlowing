@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FakeItEasy;
 using NUnit.Framework;
 using WebApiFlowing.BusinessLogic;
@@ -54,6 +55,41 @@ namespace WebApiFlowing.Test.BusinessLogic
             //asserts
             A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p)))).MustHaveHappened();
             A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, user.DesiredWeightInKgs)).MustHaveHappened();
+        }
+
+        [Test]
+        public void CalculateTrend_ShouldReturnExpectedTrend()
+        {
+            //setup data
+            var firstWeight = new WeightHistory
+            {
+                DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                WeightInKgs = 100
+            };
+            var secondWeight = new WeightHistory
+            {
+                DateOfMeasurement = DateTimeOffset.Now,
+                WeightInKgs = 90
+            };
+
+            var user = new User
+            {
+                DesiredWeightInKgs = 80,
+                WeightHistories = new List<WeightHistory>
+                {
+                    firstWeight,
+                    secondWeight
+                }
+            };
+
+            //test
+            _weightCalculator.CalculateTrend(user);
+
+            //assert
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => p.First().X == 0 
+                && p.First().Y == firstWeight.WeightInKgs
+                && p.Skip(1).First().X == 2
+                && p.Skip(1).First().Y == secondWeight.WeightInKgs))).MustHaveHappened();
         }
 
         private bool ListOfPointsIsOrderedAscending(ICollection<Point> points)
