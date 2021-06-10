@@ -9,7 +9,7 @@ namespace WebApiFlowing.BusinessLogic
     public class MathHelper : IMathHelper
     {
         private const int MinimumNumberForCalculateALinearEquation = 2,
-            NumberOfDigitsAfterCommaInFunctions = 5;
+            NumberOfDigitsAfterCommaInFunctions = 10;
 
         public LinearEquation CalculateLinearLeastSquares(ICollection<Point> points)
         {

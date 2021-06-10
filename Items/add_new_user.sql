@@ -5,7 +5,7 @@ declare @userId as int = @@identity
 
 
 insert into WeightHistory(DateOfMeasurement, WeightInKgs, UserId) values
-('2021-04-25', 97.30, @userId),
+('2021-04-25', 97.35, @userId),
 ('2021-04-26', 96.65, @userId),
 ('2021-04-27', 97.10, @userId),
 ('2021-04-28', 96.65, @userId),
