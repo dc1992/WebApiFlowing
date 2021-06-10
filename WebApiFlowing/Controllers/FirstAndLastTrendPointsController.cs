@@ -2,13 +2,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiFlowing.BusinessLogic;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs;
-using WebApiFlowing.DTOs.BusinessLogic;
 using WebApiFlowing.DTOs.Response;
-using WeightHistory = WebApiFlowing.DTOs.Response.WeightHistory;
 
 namespace WebApiFlowing.Controllers
 {

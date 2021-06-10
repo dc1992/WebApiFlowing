@@ -9,6 +9,8 @@ namespace WebApiFlowing.BusinessLogic.Extensions
     {
         public static DateTimeOffset GetFirstWeightingDate(this ICollection<WeightHistory> orderedWeights)
         {
+            orderedWeights.ShouldContainAtLeast(1);
+
             return orderedWeights.First().DateOfMeasurement;
         }
     }
