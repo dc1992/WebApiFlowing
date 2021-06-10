@@ -4,11 +4,11 @@ window.onload = async function () {
 	let userGuid = top.userGuid;
 
     //fetch data from server
-    let firstAndLastTrendPointsUrl = getQueryStringUrl(`${baseUrl}/FirstAndLastTrendPoints`, userGuid);
+    let firstAndLastTrendPointsUrl = top.getQueryStringUrl(`${baseUrl}/FirstAndLastTrendPoints`, userGuid);
     let firstAndLastTrendPointsResponse = await fetch(firstAndLastTrendPointsUrl);
     let firstAndLastTrendPointsJson = await firstAndLastTrendPointsResponse.json();
 
-    let userWeightsUrl = getQueryStringUrl(`${baseUrl}/UserWeights`, userGuid);
+    let userWeightsUrl = top.getQueryStringUrl(`${baseUrl}/UserWeights`, userGuid);
     let userWeightsResponse = await fetch(userWeightsUrl);
     let userWeightsJson = await userWeightsResponse.json();
 
@@ -29,14 +29,6 @@ window.onload = async function () {
     renderChart(firstTrendPoint, lastTrendPoint, userWeightPoints);
 }
 
-function getQueryStringUrl(endPoint, userGuid) {
-    
-    var url = new URL(endPoint),
-        params =  {userGuid: userGuid};
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-
-    return url;
-}
 
 function renderChart(firstTrendPoint, lastTrendPoint, userWeightPoints) {
 
@@ -70,7 +62,7 @@ function renderChart(firstTrendPoint, lastTrendPoint, userWeightPoints) {
             indexLabelFontSize: 16,
             dataPoints: [
                 { x: new Date(firstTrendPoint.x), y: firstTrendPoint.y },
-                { x: new Date(lastTrendPoint.x), y: lastTrendPoint.y, indexLabel: lastTrendPoint.x.toISOString().split('T')[0] }
+                { x: new Date(lastTrendPoint.x), y: lastTrendPoint.y, indexLabel: top.toReadableDate(lastTrendPoint.x) }
             ]
         }
     ]
