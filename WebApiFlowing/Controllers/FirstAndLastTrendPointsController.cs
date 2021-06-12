@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs.Response;
+using WebApiFlowing.DTOs.API.Response;
+using WebApiFlowing.DTOs.API.Shared;
 
 namespace WebApiFlowing.Controllers
 {

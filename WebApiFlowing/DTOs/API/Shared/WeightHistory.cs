@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApiFlowing.DTOs.Response
+namespace WebApiFlowing.DTOs.API.Shared
 {
     public class WeightHistory
     {
