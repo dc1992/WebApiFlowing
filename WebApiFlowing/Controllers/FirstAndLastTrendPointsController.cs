@@ -40,6 +40,8 @@ namespace WebApiFlowing.Controllers
             var daysFromStarting = _mathHelper.FindXByY(trendLinearEquation, user.DesiredWeightInKgs);
             var estimatedDate = firstWeighingDate.AddDays((int)daysFromStarting);
 
+            if (estimatedDate < firstWeighingDate)
+                throw new ArgumentOutOfRangeException("Estimated date is before first date");
 
             var response = new FirstAndLastTrendPointsResponse
             {

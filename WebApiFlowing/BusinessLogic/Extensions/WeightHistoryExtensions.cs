@@ -16,6 +16,15 @@ namespace WebApiFlowing.BusinessLogic.Extensions
             return orderedWeights.First().DateOfMeasurement;
         }
 
+        public static DateTimeOffset GetLastWeightingDate(this ICollection<WeightHistory> weights)
+        {
+            weights.ShouldContainAtLeast(1);
+
+            var orderedWeights = weights.GetOrderedCollection();
+
+            return orderedWeights.Last().DateOfMeasurement;
+        }
+
         public static ICollection<WeightHistory> GetOrderedCollection(this ICollection<WeightHistory> source)
         {
             var orderedCollection = source

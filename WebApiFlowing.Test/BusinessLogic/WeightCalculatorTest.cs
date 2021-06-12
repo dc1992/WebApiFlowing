@@ -49,6 +49,9 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
+                .Returns(10);
+
             //test
             _weightCalculator.EstimateTargetDate(user);
 
@@ -90,6 +93,35 @@ namespace WebApiFlowing.Test.BusinessLogic
                 && p.First().Y == firstWeight.WeightInKgs
                 && p.Skip(1).First().X == 2
                 && p.Skip(1).First().Y == secondWeight.WeightInKgs))).MustHaveHappened();
+        }
+
+        [Test]
+        public void TargetDateInThePast_ShouldThrowArgumentOutOfRangeException()
+        {
+            //setup data
+            var user = new User
+            {
+                DesiredWeightInKgs = 80,
+                WeightHistories = new List<WeightHistory>
+                {
+                    new WeightHistory
+                    {
+                        DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                        WeightInKgs = 100
+                    },
+                    new WeightHistory
+                    {
+                        DateOfMeasurement = DateTimeOffset.Now,
+                        WeightInKgs = 90
+                    }
+                }
+            };
+
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
+                .Returns(-1);
+
+            //test
+            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTargetDate(user));
         }
 
         private bool ListOfPointsIsOrderedAscending(ICollection<Point> points)
