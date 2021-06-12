@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using WebApiFlowing.Data;
 using WebApiFlowing.Data.Models;
 using WebApiFlowing.Data.Repositories;
+using WeightHistory = WebApiFlowing.DTOs.WeightHistory;
 
 namespace WebApiFlowing.Test.Data
 {
@@ -45,6 +48,32 @@ namespace WebApiFlowing.Test.Data
             var user = await _userRepository.GetUserInfosBy(_defaultUserGuid);
 
             Assert.IsNull(user);
+        }
+
+        [Test]
+        public async Task InsertUser_ShouldInsertUser()
+        {
+            //test
+            var userToInsert = new DTOs.User
+            {
+                WeightHistories = new List<WeightHistory>(),
+                HeightInMeters = 2,
+                Name = "test",
+                Surname = "test2",
+                DesiredWeightInKgs = 80
+            };
+
+            var inserted = await _userRepository.InsertUser(userToInsert);
+
+            //assert
+            var dataContextUser = await _dataContext.Users
+                .SingleOrDefaultAsync(u => u.Guid == inserted.Guid &&
+                   u.Name == userToInsert.Name &&
+                   u.Surname == userToInsert.Surname &&
+                   u.DesiredWeightInKgs == userToInsert.DesiredWeightInKgs &&
+                   u.HeightInMeters == userToInsert.HeightInMeters);
+                    
+            Assert.IsNotNull(dataContextUser);
         }
     }
 }

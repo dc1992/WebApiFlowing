@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs.Response;
+using WebApiFlowing.DTOs.API.Response;
+using WebApiFlowing.DTOs.API.Shared;
 
 namespace WebApiFlowing.Controllers
 {
@@ -39,6 +40,8 @@ namespace WebApiFlowing.Controllers
             var daysFromStarting = _mathHelper.FindXByY(trendLinearEquation, user.DesiredWeightInKgs);
             var estimatedDate = firstWeighingDate.AddDays((int)daysFromStarting);
 
+            if (estimatedDate < firstWeighingDate)
+                throw new ArgumentOutOfRangeException("Estimated date is before first date");
 
             var response = new FirstAndLastTrendPointsResponse
             {

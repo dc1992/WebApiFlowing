@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs.Response;
+using WebApiFlowing.DTOs.API.Response;
 using WeightHistory = WebApiFlowing.DTOs.WeightHistory;
 
 namespace WebApiFlowing.Controllers
@@ -39,7 +39,7 @@ namespace WebApiFlowing.Controllers
             var response = new UserWeightsResponse
             {
                 WeightHistories = orderedWeights
-                    .Select(wh => new DTOs.Response.WeightHistory
+                    .Select(wh => new DTOs.API.Shared.WeightHistory
                     {
                         DateOfMeasurement = wh.DateOfMeasurement,
                         WeightInKgs = wh.WeightInKgs

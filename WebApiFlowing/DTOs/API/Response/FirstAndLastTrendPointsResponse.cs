@@ -1,4 +1,6 @@
-﻿namespace WebApiFlowing.DTOs.Response
+﻿using WebApiFlowing.DTOs.API.Shared;
+
+namespace WebApiFlowing.DTOs.API.Response
 {
     public class FirstAndLastTrendPointsResponse
     {

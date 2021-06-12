@@ -37,5 +37,29 @@ namespace WebApiFlowing.Data.Repositories
 
             return user;
         }
+
+        public async Task<User> InsertUser(User user)
+        {
+            var userData = new Data.Models.User
+            {
+                Guid = Guid.NewGuid(),
+                DesiredWeightInKgs = user.DesiredWeightInKgs,
+                HeightInMeters = user.HeightInMeters,
+                Name = user.Name,
+                Surname = user.Surname,
+                WeightHistories = user.WeightHistories.Select(wh => new Data.Models.WeightHistory
+                {
+                    DateOfMeasurement = wh.DateOfMeasurement,
+                    WeightInKgs = wh.WeightInKgs
+                }).ToList()
+            };
+
+            await _dataContext.Users.AddAsync(userData);
+
+            await _dataContext.SaveChangesAsync();
+
+            user.Guid = userData.Guid;
+            return user;
+        }
     }
 }
