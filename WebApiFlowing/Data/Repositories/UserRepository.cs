@@ -38,7 +38,7 @@ namespace WebApiFlowing.Data.Repositories
             return user;
         }
 
-        public Task InsertUser(User user)
+        public Task<User> InsertUser(User user)
         {
             throw new NotImplementedException();
         }

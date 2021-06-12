@@ -8,6 +8,6 @@ namespace WebApiFlowing.Data.Interfaces
     {
         Task<User> GetUserInfosBy(Guid guid);
 
-        Task InsertUser(User user);
+        Task<User> InsertUser(User user);
     }
 }

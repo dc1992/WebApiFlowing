@@ -8,7 +8,7 @@ namespace WebApiFlowing.DTOs.API.Response
     {
         public UserResponse()
         {
-            WeightHistories = new List<WeightHistory>();
+            WeightHistories = new List<Shared.WeightHistory>();
         }
 
         public Guid Guid { get; set; }
@@ -23,6 +23,6 @@ namespace WebApiFlowing.DTOs.API.Response
 
         public double HeightInMeters { get; set; }
 
-        public ICollection<WeightHistory> WeightHistories { get; set; }
+        public ICollection<Shared.WeightHistory> WeightHistories { get; set; }
     }
 }

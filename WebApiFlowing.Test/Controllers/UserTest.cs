@@ -64,17 +64,29 @@ namespace WebApiFlowing.Test.Controllers
                 }
             };
 
+            var insertedUser = new User
+            {
+                Guid = _defaultUserGuid,
+                DesiredWeightInKgs = user.DesiredWeightInKgs.Value,
+                HeightInMeters = user.HeightInMeters.Value,
+                Name = user.Name,
+                Surname = user.Surname,
+                WeightHistories = user.WeightHistories
+            };
+            A.CallTo(() => _userRepository.InsertUser(A<User>._)).Returns(insertedUser);
+
             //test
-            await _controller.Post(user);
+            var response = await _controller.Post(user);
 
             //assert
             A.CallTo(() => _userRepository.InsertUser(A<User>.That
-                    .Matches(u => u.Name == user.Name && 
-                                  u.Surname == user.Surname && 
-                                  u.DesiredWeightInKgs == user.DesiredWeightInKgs.Value &&
-                                  u.HeightInMeters == user.HeightInMeters.Value &&
-                                  u.WeightHistories.Count == user.WeightHistories.Count)))
+                    .Matches(u => u.Name == insertedUser.Name && 
+                                  u.Surname == insertedUser.Surname && 
+                                  u.DesiredWeightInKgs == insertedUser.DesiredWeightInKgs &&
+                                  u.HeightInMeters == insertedUser.HeightInMeters)))
                 .MustHaveHappened();
+
+            Assert.AreEqual(insertedUser.Guid, response.Guid);
         }
     }
 }
