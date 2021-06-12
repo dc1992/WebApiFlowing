@@ -10,17 +10,21 @@ namespace WebApiFlowing.DTOs.API.Request
             WeightHistories = new List<WeightHistory>();
         }
 
+        [Required]
         [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
         [StringLength(50)]
         public string Surname { get; set; }
 
+        [Required]
         [Range(20, 600)]
-        public double DesiredWeightInKgs { get; set; }
+        public double? DesiredWeightInKgs { get; set; }
 
+        [Required]
         [Range(1, 3)]
-        public double HeightInMeters { get; set; }
+        public double? HeightInMeters { get; set; }
 
         public ICollection<WeightHistory> WeightHistories { get; set; }
     }

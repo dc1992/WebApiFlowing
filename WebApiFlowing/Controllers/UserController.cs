@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApiFlowing.Data.Interfaces;
+using WebApiFlowing.DTOs.API.Request;
 using WebApiFlowing.DTOs.API.Response;
 
 namespace WebApiFlowing.Controllers
@@ -17,7 +18,7 @@ namespace WebApiFlowing.Controllers
         }
 
         [HttpPost]
-        public async Task<UserResponse> Post()
+        public async Task<UserResponse> Post(UserRequest request)
         {
 
             return new UserResponse();

@@ -7,5 +7,7 @@ namespace WebApiFlowing.Data.Interfaces
     public interface IUserRepository
     {
         Task<User> GetUserInfosBy(Guid guid);
+
+        Task InsertUser(User user);
     }
 }
