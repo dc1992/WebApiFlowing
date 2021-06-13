@@ -45,5 +45,11 @@ namespace WebApiFlowing.Test
         {
             Assert.IsNotNull(_host.Services.GetRequiredService<IMathHelper>());
         }
+
+        [Test]
+        public void Startup_ShouldHaveIBodyMassIndexCalculatorRegistered()
+        {
+            Assert.IsNotNull(_host.Services.GetRequiredService<IBodyMassIndexCalculator>());
+        }
     }
 }

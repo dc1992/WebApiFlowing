@@ -31,6 +31,7 @@ namespace WebApiFlowing
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IWeightTrendCalculator, WeightTrendCalculator>();
             services.AddTransient<IMathHelper, MathHelper>();
+            services.AddTransient<IBodyMassIndexCalculator, BodyMassIndexCalculator>();
             services.AddControllers();
             services.AddCors();
             services.AddSwaggerGen(c =>
