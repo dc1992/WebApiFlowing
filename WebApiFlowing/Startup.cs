@@ -29,7 +29,7 @@ namespace WebApiFlowing
             services.AddDbContext<WebApiFlowingDataContext>(dco => dco.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
             services.AddScoped<IDataContext>(spe => spe.GetService<WebApiFlowingDataContext>());
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IWeightCalculator, WeightCalculator>();
+            services.AddTransient<IWeightTrendCalculator, WeightTrendCalculator>();
             services.AddTransient<IMathHelper, MathHelper>();
             services.AddControllers();
             services.AddCors();

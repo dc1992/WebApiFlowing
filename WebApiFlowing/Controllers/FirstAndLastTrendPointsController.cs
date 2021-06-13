@@ -14,10 +14,10 @@ namespace WebApiFlowing.Controllers
     public class FirstAndLastTrendPointsController : ControllerBase
     {
         private IUserRepository _userRepository;
-        private IWeightCalculator _weightCalculator;
+        private IWeightTrendCalculator _weightCalculator;
         private IMathHelper _mathHelper;
 
-        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightCalculator weightCalculator, IMathHelper mathHelper)
+        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightTrendCalculator weightCalculator, IMathHelper mathHelper)
         {
             _userRepository = userRepository;
             _weightCalculator = weightCalculator;

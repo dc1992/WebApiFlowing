@@ -17,8 +17,9 @@ namespace WebApiFlowing.Test
         protected IDataContext _dataContext;
         protected DbContextOptions<WebApiFlowingDataContext> _options;
         protected Guid _defaultUserGuid;
-        protected IWeightCalculator _weightCalculator;
+        protected IWeightTrendCalculator _weightCalculator;
         protected IMathHelper _mathHelper;
+        protected IBodyMassIndexCalculator _bodyMassIndexCalculator;
 
         [SetUp]
         public void SetUp()
@@ -33,9 +34,11 @@ namespace WebApiFlowing.Test
 
             _defaultUserGuid = Guid.Parse("ae277024-e1a8-4e0b-a188-9ed15ab8ba71");
 
-            _weightCalculator = A.Fake<IWeightCalculator>();
+            _weightCalculator = A.Fake<IWeightTrendCalculator>();
 
             _mathHelper = A.Fake<IMathHelper>();
+
+            _bodyMassIndexCalculator = A.Fake<IBodyMassIndexCalculator>();
         }
 
         protected void Validate(object toValidate)

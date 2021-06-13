@@ -15,7 +15,7 @@ namespace WebApiFlowing.IntegrationTest
         protected IDataContext _fakeDataContext;
         protected DbContextOptions<WebApiFlowingDataContext> _fakeDbContextOptions;
         protected Guid _defaultUserGuid;
-        protected IWeightCalculator _weightCalculator;
+        protected IWeightTrendCalculator _weightCalculator;
         protected IMathHelper _mathHelper;
 
         [SetUp]
@@ -31,7 +31,7 @@ namespace WebApiFlowing.IntegrationTest
 
             _mathHelper = new MathHelper();
 
-            _weightCalculator = new WeightCalculator(_mathHelper);
+            _weightCalculator = new WeightTrendCalculator(_mathHelper);
         }
     }
 }

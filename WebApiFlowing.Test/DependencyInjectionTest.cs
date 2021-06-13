@@ -37,7 +37,7 @@ namespace WebApiFlowing.Test
         [Test]
         public void Startup_ShouldHaveIWeightCalculatorRegistered()
         {
-            Assert.IsNotNull(_host.Services.GetRequiredService<IWeightCalculator>());
+            Assert.IsNotNull(_host.Services.GetRequiredService<IWeightTrendCalculator>());
         }
 
         [Test]

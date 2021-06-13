@@ -4,7 +4,7 @@ using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.BusinessLogic.Interfaces
 {
-    public interface IWeightCalculator
+    public interface IWeightTrendCalculator
     {
         DateTimeOffset EstimateTargetDate(User user);
 
