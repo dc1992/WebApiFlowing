@@ -84,12 +84,12 @@ namespace WebApiFlowing.Test.Controllers
         }
 
         [Test]
-        public async Task EstimatedDateBeforeFirstDate_ShouldThrowArgumentOutOfRangeException()
+        public void EstimatedDateBeforeLastDate_ShouldThrowArgumentOutOfRangeException()
         {
             //setup
             var firstWeight = new WeightHistory
             {
-                DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                DateOfMeasurement = DateTimeOffset.Now.AddDays(-20),
                 WeightInKgs = 100
             };
 
@@ -119,7 +119,7 @@ namespace WebApiFlowing.Test.Controllers
             A.CallTo(() => _weightCalculator.CalculateTrend(user)).Returns(equation);
             A.CallTo(() => _mathHelper.FindZero(equation)).Returns(expectedFirstPointY);
 
-            var findXByYResult = -10;
+            var findXByYResult = 10;
             A.CallTo(() => _mathHelper.FindXByY(equation, user.DesiredWeightInKgs)).Returns(findXByYResult);
 
             //test

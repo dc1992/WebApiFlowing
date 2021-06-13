@@ -26,8 +26,8 @@ namespace WebApiFlowing.BusinessLogic
             var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
             var estimatedDate = firstWeighingDate.AddDays((int) daysFromStarting);
 
+            //check if result is reachable with current trend
             var lastWeighingDate = user.WeightHistories.GetLastWeightingDate();
-
             if (estimatedDate < lastWeighingDate)
                 throw new ArgumentOutOfRangeException("Target not reacheble with current trend");
 

@@ -14,7 +14,7 @@ namespace WebApiFlowing.Controllers
     {
         private IUserRepository _userRepository;
         private IBodyMassIndexCalculator _bodyMassIndexCalculator;
-        private const int NumberOfDigitsAfterCommaInWeight = 2;
+        private const int NumberOfDigitsAfterCommaInWeight = 1;
 
         public IdealWeightController(IUserRepository userRepository, IBodyMassIndexCalculator bodyMassIndexCalculator)
         {
