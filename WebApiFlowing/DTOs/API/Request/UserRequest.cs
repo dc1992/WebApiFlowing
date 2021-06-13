@@ -7,7 +7,7 @@ namespace WebApiFlowing.DTOs.API.Request
     {
         public UserRequest()
         {
-            WeightHistories = new List<WeightHistory>();
+            WeightHistories = new List<Shared.WeightHistory>();
         }
 
         [Required]
@@ -26,6 +26,6 @@ namespace WebApiFlowing.DTOs.API.Request
         [Range(1, 3)]
         public double? HeightInMeters { get; set; }
 
-        public ICollection<WeightHistory> WeightHistories { get; set; }
+        public ICollection<Shared.WeightHistory> WeightHistories { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
@@ -33,7 +34,7 @@ namespace WebApiFlowing.Test.Controllers
                 Surname = surname,
                 HeightInMeters = height,
                 DesiredWeightInKgs = weight,
-                WeightHistories = new List<WeightHistory>()
+                WeightHistories = new List<DTOs.API.Shared.WeightHistory>()
             };
 
             Assert.Throws<ValidationException>(() => Validate(request));
@@ -49,14 +50,14 @@ namespace WebApiFlowing.Test.Controllers
                 Surname = "ceccacci",
                 DesiredWeightInKgs = 80,
                 HeightInMeters = 2,
-                WeightHistories = new List<WeightHistory>
+                WeightHistories = new List<DTOs.API.Shared.WeightHistory>
                 {
-                    new WeightHistory
+                    new DTOs.API.Shared.WeightHistory
                     {
                         DateOfMeasurement = DateTimeOffset.Now.AddDays(-1),
                         WeightInKgs = 100
                     },
-                    new WeightHistory
+                    new DTOs.API.Shared.WeightHistory
                     {
                         DateOfMeasurement = DateTimeOffset.Now,
                         WeightInKgs = 90
@@ -72,6 +73,11 @@ namespace WebApiFlowing.Test.Controllers
                 Name = user.Name,
                 Surname = user.Surname,
                 WeightHistories = user.WeightHistories
+                    .Select(wh => new WeightHistory
+                    {
+                        DateOfMeasurement = wh.DateOfMeasurement,
+                        WeightInKgs = wh.WeightInKgs
+                    }).ToList()
             };
             A.CallTo(() => _userRepository.InsertUser(A<User>._)).Returns(insertedUser);
 
