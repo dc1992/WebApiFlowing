@@ -11,7 +11,7 @@ namespace WebApiFlowing.Data.Models
         public double MinimumBMI { get; set; }
 
         [Range(0, double.MaxValue)]
-        public double MaximumBMI { get; set; }
+        public double? MaximumBMI { get; set; }
 
         [StringLength(100)]
         public string Description { get; set; }
