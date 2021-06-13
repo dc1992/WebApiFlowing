@@ -9,6 +9,8 @@ namespace WebApiFlowing.Data.Interfaces
     {
         DbSet<User> Users { get; set; }
 
+        DbSet<BodyMassIndexRange> BodyMassIndexRanges { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
