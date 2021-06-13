@@ -2,7 +2,7 @@ writeDescription()
 
 async function writeDescription() {
 	
-    var output = document.getElementById("dummy")
+    var targetWeight = document.getElementById("targetWeight")
 
 	let baseUrl = top.baseUrl;
 	let userGuid = top.userGuid;
@@ -13,5 +13,5 @@ async function writeDescription() {
     let estimatedDateForReachingWeightJson = await estimatedDateForReachingWeightResponse.json();
 	
 	let date = new Date(estimatedDateForReachingWeightJson.estimatedDate)
-	output.innerHTML += `Raggiungerai il tuo peso desiderato (${estimatedDateForReachingWeightJson.desiredWeightInKgs} kg) il ${top.toReadableDate(date)}`
+	targetWeight.innerHTML += `Raggiungerai il tuo peso desiderato (${estimatedDateForReachingWeightJson.desiredWeightInKgs} kg) il ${top.toReadableDate(date)}`
 }

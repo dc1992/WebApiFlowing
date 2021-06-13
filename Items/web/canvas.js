@@ -29,7 +29,7 @@ window.onload = async function () {
 		//now draw the graph
 		renderChart(firstTrendPoint, lastTrendPoint, userWeightPoints);
 	} catch (error) {
-		alert("500")
+		alert("Impossibile generare il grafico")
 	}
 }
 
