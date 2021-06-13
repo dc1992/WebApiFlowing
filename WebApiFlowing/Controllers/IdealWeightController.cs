@@ -14,6 +14,7 @@ namespace WebApiFlowing.Controllers
     {
         private IUserRepository _userRepository;
         private IBodyMassIndexCalculator _bodyMassIndexCalculator;
+        private const int NumberOfDigitsAfterCommaInWeight = 2;
 
         public IdealWeightController(IUserRepository userRepository, IBodyMassIndexCalculator bodyMassIndexCalculator)
         {
@@ -31,8 +32,8 @@ namespace WebApiFlowing.Controllers
 
             return new IdealWeightResponse
             {
-                MaximumWeightInKgs = idealWeightRange.MaximumIdealWeightInKgs,
-                MinimumWeightInKgs = idealWeightRange.MinimumIdealWeightInKgs
+                MaximumWeightInKgs = Math.Round(idealWeightRange.MaximumIdealWeightInKgs, NumberOfDigitsAfterCommaInWeight),
+                MinimumWeightInKgs = Math.Round(idealWeightRange.MinimumIdealWeightInKgs, NumberOfDigitsAfterCommaInWeight)
             };
         }
     }
