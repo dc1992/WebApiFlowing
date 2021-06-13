@@ -13,9 +13,9 @@ namespace WebApiFlowing.Controllers
     public class EstimatedDateForReachingWeightController : ControllerBase
     {
         private IUserRepository _userRepository;
-        private IWeightCalculator _weightCalculator;
+        private IWeightTrendCalculator _weightCalculator;
 
-        public EstimatedDateForReachingWeightController(IUserRepository userRepository, IWeightCalculator weightCalculator)
+        public EstimatedDateForReachingWeightController(IUserRepository userRepository, IWeightTrendCalculator weightCalculator)
         {
             _userRepository = userRepository;
             _weightCalculator = weightCalculator;

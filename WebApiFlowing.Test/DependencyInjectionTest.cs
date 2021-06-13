@@ -37,13 +37,19 @@ namespace WebApiFlowing.Test
         [Test]
         public void Startup_ShouldHaveIWeightCalculatorRegistered()
         {
-            Assert.IsNotNull(_host.Services.GetRequiredService<IWeightCalculator>());
+            Assert.IsNotNull(_host.Services.GetRequiredService<IWeightTrendCalculator>());
         }
 
         [Test]
         public void Startup_ShouldHaveIMathHelperRegistered()
         {
             Assert.IsNotNull(_host.Services.GetRequiredService<IMathHelper>());
+        }
+
+        [Test]
+        public void Startup_ShouldHaveIBodyMassIndexCalculatorRegistered()
+        {
+            Assert.IsNotNull(_host.Services.GetRequiredService<IBodyMassIndexCalculator>());
         }
     }
 }

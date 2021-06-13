@@ -12,12 +12,12 @@ namespace WebApiFlowing.Test.BusinessLogic
     [TestFixture]
     public class WeightCalculatorTest : BaseTest
     {
-        private WeightCalculator _weightCalculator;
+        private WeightTrendCalculator _weightCalculator;
 
         [SetUp]
         public void SetUp()
         {
-            _weightCalculator = new WeightCalculator(_mathHelper);
+            _weightCalculator = new WeightTrendCalculator(_mathHelper);
         }
 
         [Test]

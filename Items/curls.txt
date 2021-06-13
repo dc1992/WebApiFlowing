@@ -10,6 +10,10 @@ curl --location --request GET 'http://localhost:60906/UserWeights?userGuid=35dac
 curl --location --request GET 'http://localhost:60906/FirstAndLastTrendPoints?userGuid=35dacbf7-c939-4112-aa86-bee0792e37d3'
 
 
+#PESO IDEALE
+curl --location --request GET 'http://localhost:60906/IdealWeight?userGuid=35dacbf7-c939-4112-aa86-bee0792e37d3'
+
+
 #INSERIMENTO NUOVO UTENTE
 curl --location --request POST 'http://localhost:60906/User' \
 --header 'Content-Type: application/json' \

@@ -6,12 +6,12 @@ using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.BusinessLogic
 {
-    public class WeightCalculator : IWeightCalculator
+    public class WeightTrendCalculator : IWeightTrendCalculator
     {
         private IMathHelper _mathHelper;
         private const int MinimumNumberForEstimation = 2;
 
-        public WeightCalculator(IMathHelper mathHelper)
+        public WeightTrendCalculator(IMathHelper mathHelper)
         {
             _mathHelper = mathHelper;
         }
