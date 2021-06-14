@@ -51,16 +51,17 @@ namespace WebApiFlowing.Test.Controllers
             A.CallTo(() => _userRepository.GetUserInfosBy(_defaultUserGuid))
                 .Returns(user);
 
-            var equation = new LinearEquation(10, 20);
-            var expectedFirstPointY = 10;    
-
-            A.CallTo(() => _weightCalculator.CalculateTrend(user)).Returns(equation);
-            A.CallTo(() => _mathHelper.FindZero(equation)).Returns(expectedFirstPointY);
-
             var findXByYResult = 10;
-            A.CallTo(() => _mathHelper.FindXByY(equation, user.DesiredWeightInKgs)).Returns(findXByYResult);
-
             var expectedLastPointX = user.WeightHistories.GetFirstWeightingDate().AddDays(findXByYResult);
+            var estimatedTarget = new Target
+            {
+                Trend = new LinearEquation(10, 20),
+                EstimatedDate = expectedLastPointX
+            };
+
+            var expectedFirstPointY = 10;
+            A.CallTo(() => _weightCalculator.EstimateTarget(user)).Returns(estimatedTarget);
+            A.CallTo(() => _mathHelper.FindZero(estimatedTarget.Trend)).Returns(expectedFirstPointY);
 
             //test
             var result = await _controller.Get(_defaultUserGuid);
@@ -81,49 +82,6 @@ namespace WebApiFlowing.Test.Controllers
 
             Assert.ThrowsAsync<ArgumentNullException>(async () => 
                 await _controller.Get(_defaultUserGuid));
-        }
-
-        [Test]
-        public void EstimatedDateBeforeLastDate_ShouldThrowArgumentOutOfRangeException()
-        {
-            //setup
-            var firstWeight = new WeightHistory
-            {
-                DateOfMeasurement = DateTimeOffset.Now.AddDays(-20),
-                WeightInKgs = 100
-            };
-
-            var secondWeight = new WeightHistory
-            {
-                DateOfMeasurement = DateTimeOffset.Now.AddDays(-1),
-                WeightInKgs = 90
-            };
-
-            var user = new User
-            {
-                Guid = _defaultUserGuid,
-                DesiredWeightInKgs = 150,
-                WeightHistories = new List<WeightHistory>
-                {
-                    firstWeight,
-                    secondWeight
-                }
-            };
-
-            A.CallTo(() => _userRepository.GetUserInfosBy(_defaultUserGuid))
-                .Returns(user);
-
-            var equation = new LinearEquation(10, 20);
-            var expectedFirstPointY = 10;
-
-            A.CallTo(() => _weightCalculator.CalculateTrend(user)).Returns(equation);
-            A.CallTo(() => _mathHelper.FindZero(equation)).Returns(expectedFirstPointY);
-
-            var findXByYResult = 10;
-            A.CallTo(() => _mathHelper.FindXByY(equation, user.DesiredWeightInKgs)).Returns(findXByYResult);
-
-            //test
-            Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>  await _controller.Get(_defaultUserGuid));
         }
     }
 }

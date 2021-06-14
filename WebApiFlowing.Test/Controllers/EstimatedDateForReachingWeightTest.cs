@@ -40,7 +40,7 @@ namespace WebApiFlowing.Test.Controllers
             await _controller.Get(_defaultUserGuid);
 
             A.CallTo(() => _userRepository.GetUserInfosBy(_defaultUserGuid)).MustHaveHappened();
-            A.CallTo(() => _weightCalculator.EstimateTargetDate(A<User>._)).MustHaveHappened();
+            A.CallTo(() => _weightCalculator.EstimateTarget(A<User>._)).MustHaveHappened();
         }
     }
 }

@@ -27,11 +27,11 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            var estimatedDate = _weightCalculator.EstimateTargetDate(user);
+            var estimatedTarget = _weightCalculator.EstimateTarget(user);
 
             var response = new EstimatedDateForReachingWeightResponse
             {
-                EstimatedDate = estimatedDate,
+                EstimatedDate = estimatedTarget.EstimatedDate,
                 DesiredWeightInKgs = user.DesiredWeightInKgs
             };
 

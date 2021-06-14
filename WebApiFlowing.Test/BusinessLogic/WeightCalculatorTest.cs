@@ -24,44 +24,11 @@ namespace WebApiFlowing.Test.BusinessLogic
         public void EmptyUser_EstimateTargetDate_ShouldThrowArgumentNullException()
         {
             var user = new User();
-            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTargetDate(user));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTarget(user));
         }
 
         [Test]
-        public void ValidUser_EstimateTargetDate_ShouldReturnDate()
-        {
-            //setup data
-            var user = new User
-            {
-                DesiredWeightInKgs = 80,
-                WeightHistories = new List<WeightHistory>
-                {
-                    new WeightHistory
-                    {
-                        DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
-                        WeightInKgs = 100
-                    },
-                    new WeightHistory
-                    {
-                        DateOfMeasurement = DateTimeOffset.Now,
-                        WeightInKgs = 90
-                    }
-                }
-            };
-
-            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
-                .Returns(10);
-
-            //test
-            _weightCalculator.EstimateTargetDate(user);
-
-            //asserts
-            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p)))).MustHaveHappened();
-            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, user.DesiredWeightInKgs)).MustHaveHappened();
-        }
-
-        [Test]
-        public void CalculateTrend_ShouldReturnExpectedTrend()
+        public void ValidUser_EstimateTarget_ShouldReturnExpectedTarget()
         {
             //setup data
             var firstWeight = new WeightHistory
@@ -74,7 +41,6 @@ namespace WebApiFlowing.Test.BusinessLogic
                 DateOfMeasurement = DateTimeOffset.Now,
                 WeightInKgs = 90
             };
-
             var user = new User
             {
                 DesiredWeightInKgs = 80,
@@ -85,11 +51,17 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            //test
-            _weightCalculator.CalculateTrend(user);
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
+                .Returns(10);
 
-            //assert
-            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => p.First().X == 0 
+            //test
+            _weightCalculator.EstimateTarget(user);
+
+            //asserts
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p)))).MustHaveHappened();
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, user.DesiredWeightInKgs)).MustHaveHappened();
+
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => p.First().X == 0
                 && p.First().Y == firstWeight.WeightInKgs
                 && p.Skip(1).First().X == 2
                 && p.Skip(1).First().Y == secondWeight.WeightInKgs))).MustHaveHappened();
@@ -121,7 +93,7 @@ namespace WebApiFlowing.Test.BusinessLogic
                 .Returns(-1);
 
             //test
-            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTargetDate(user));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTarget(user));
         }
 
         private bool ListOfPointsIsOrderedAscending(ICollection<Point> points)

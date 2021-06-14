@@ -30,20 +30,15 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            var trendLinearEquation = _weightCalculator.CalculateTrend(user);
+            var estimatedTarget = _weightCalculator.EstimateTarget(user);
 
-            //find x and y of first trend point
+            //first point
             var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
-            var firstTrendPointY = _mathHelper.FindZero(trendLinearEquation);
+            var firstTrendPointY = _mathHelper.FindZero(estimatedTarget.Trend);
 
-            //find x and y of last trend point
-            var daysFromStarting = _mathHelper.FindXByY(trendLinearEquation, user.DesiredWeightInKgs);
-            var estimatedDate = firstWeighingDate.AddDays((int)daysFromStarting);
-
-            //check if result is reachable with current trend
-            var lastWeighingDate = user.WeightHistories.GetLastWeightingDate();
-            if (estimatedDate < lastWeighingDate)
-                throw new ArgumentOutOfRangeException("Target not reacheble with current trend");
+            //last point
+            var estimatedDate = estimatedTarget.EstimatedDate;
+            var desiredWeightInKgs = user.DesiredWeightInKgs;
 
             var response = new FirstAndLastTrendPointsResponse
             {
@@ -55,7 +50,7 @@ namespace WebApiFlowing.Controllers
                 LastTrendPoint = new TrendPoint
                 {
                     X = estimatedDate,
-                    Y = user.DesiredWeightInKgs
+                    Y = desiredWeightInKgs
                 }
             };
 
