@@ -43,6 +43,7 @@ namespace WebApiFlowing.BusinessLogic
 
         public double FindXByY(LinearEquation linearEquation, double y)
         {
+            //since y = mx + b  -->  x = (y - b)/m
             var x = (y - linearEquation.B) / linearEquation.M;
 
             return x;

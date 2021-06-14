@@ -12,23 +12,63 @@ namespace WebApiFlowing.Test.BusinessLogic
     [TestFixture]
     public class WeightCalculatorTest : BaseTest
     {
-        private WeightCalculator _weightCalculator;
+        private WeightTrendCalculator _weightCalculator;
 
         [SetUp]
         public void SetUp()
         {
-            _weightCalculator = new WeightCalculator(_mathHelper);
+            _weightCalculator = new WeightTrendCalculator(_mathHelper);
         }
 
         [Test]
         public void EmptyUser_EstimateTargetDate_ShouldThrowArgumentNullException()
         {
             var user = new User();
-            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTargetDate(user));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTarget(user));
         }
 
         [Test]
-        public void ValidUser_EstimateTargetDate_ShouldReturnDate()
+        public void ValidUser_EstimateTarget_ShouldReturnExpectedTarget()
+        {
+            //setup data
+            var firstWeight = new WeightHistory
+            {
+                DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                WeightInKgs = 100
+            };
+            var secondWeight = new WeightHistory
+            {
+                DateOfMeasurement = DateTimeOffset.Now,
+                WeightInKgs = 90
+            };
+            var user = new User
+            {
+                DesiredWeightInKgs = 80,
+                WeightHistories = new List<WeightHistory>
+                {
+                    firstWeight,
+                    secondWeight
+                }
+            };
+
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
+                .Returns(10);
+
+            //test
+            _weightCalculator.EstimateTarget(user);
+
+            //asserts
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p)))).MustHaveHappened();
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, user.DesiredWeightInKgs)).MustHaveHappened();
+
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => p.First().X == 0
+                && p.First().Y == firstWeight.WeightInKgs
+                && p.Skip(1).First().X == 2
+                && p.Skip(1).First().Y == secondWeight.WeightInKgs))).MustHaveHappened();
+        }
+
+        [Test]
+        public void TargetDateInThePast_ShouldThrowArgumentOutOfRangeException()
         {
             //setup data
             var user = new User
@@ -49,47 +89,11 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            //test
-            _weightCalculator.EstimateTargetDate(user);
-
-            //asserts
-            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p)))).MustHaveHappened();
-            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, user.DesiredWeightInKgs)).MustHaveHappened();
-        }
-
-        [Test]
-        public void CalculateTrend_ShouldReturnExpectedTrend()
-        {
-            //setup data
-            var firstWeight = new WeightHistory
-            {
-                DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
-                WeightInKgs = 100
-            };
-            var secondWeight = new WeightHistory
-            {
-                DateOfMeasurement = DateTimeOffset.Now,
-                WeightInKgs = 90
-            };
-
-            var user = new User
-            {
-                DesiredWeightInKgs = 80,
-                WeightHistories = new List<WeightHistory>
-                {
-                    firstWeight,
-                    secondWeight
-                }
-            };
+            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
+                .Returns(-1);
 
             //test
-            _weightCalculator.CalculateTrend(user);
-
-            //assert
-            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => p.First().X == 0 
-                && p.First().Y == firstWeight.WeightInKgs
-                && p.Skip(1).First().X == 2
-                && p.Skip(1).First().Y == secondWeight.WeightInKgs))).MustHaveHappened();
+            Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTarget(user));
         }
 
         private bool ListOfPointsIsOrderedAscending(ICollection<Point> points)

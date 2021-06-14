@@ -1,32 +1,36 @@
 window.onload = async function () {
 
-	let baseUrl = top.baseUrl;
-	let userGuid = top.userGuid;
-
-    //fetch data from server
-    let firstAndLastTrendPointsUrl = top.getQueryStringUrl(`${baseUrl}/FirstAndLastTrendPoints`, userGuid);
-    let firstAndLastTrendPointsResponse = await fetch(firstAndLastTrendPointsUrl);
-    let firstAndLastTrendPointsJson = await firstAndLastTrendPointsResponse.json();
-
-    let userWeightsUrl = top.getQueryStringUrl(`${baseUrl}/UserWeights`, userGuid);
-    let userWeightsResponse = await fetch(userWeightsUrl);
-    let userWeightsJson = await userWeightsResponse.json();
-
-    //calculate the trend points
-    let firstPointFromResponse = firstAndLastTrendPointsJson.firstTrendPoint;
-    let firstTrendPoint = { x: new Date(firstPointFromResponse.x), y: firstPointFromResponse.y };
-
-    let lastPointFromResponse = firstAndLastTrendPointsJson.lastTrendPoint;
-    let lastTrendPoint = { x: new Date(lastPointFromResponse.x), y: lastPointFromResponse.y };
-
-    //get every point to draw the graph
-    let userWeightPoints = [];
-    userWeightsJson.weightHistories.forEach(weight => {
-        userWeightPoints.push({ x: new Date(weight.dateOfMeasurement), y: weight.weightInKgs })	
-    });
-    
-    //now draw the graph
-    renderChart(firstTrendPoint, lastTrendPoint, userWeightPoints);
+	try {
+		let baseUrl = top.baseUrl;
+		let userGuid = top.userGuid;
+	
+		//fetch data from server
+		let firstAndLastTrendPointsUrl = top.getQueryStringUrl(`${baseUrl}/FirstAndLastTrendPoints`, userGuid);
+		let firstAndLastTrendPointsResponse = await fetch(firstAndLastTrendPointsUrl);
+		let firstAndLastTrendPointsJson = await firstAndLastTrendPointsResponse.json();
+	
+		let userWeightsUrl = top.getQueryStringUrl(`${baseUrl}/UserWeights`, userGuid);
+		let userWeightsResponse = await fetch(userWeightsUrl);
+		let userWeightsJson = await userWeightsResponse.json();
+	
+		//calculate the trend points
+		let firstPointFromResponse = firstAndLastTrendPointsJson.firstTrendPoint;
+		let firstTrendPoint = { x: new Date(firstPointFromResponse.x), y: firstPointFromResponse.y };
+	
+		let lastPointFromResponse = firstAndLastTrendPointsJson.lastTrendPoint;
+		let lastTrendPoint = { x: new Date(lastPointFromResponse.x), y: lastPointFromResponse.y };
+	
+		//get every point to draw the graph
+		let userWeightPoints = [];
+		userWeightsJson.weightHistories.forEach(weight => {
+			userWeightPoints.push({ x: new Date(weight.dateOfMeasurement), y: weight.weightInKgs })	
+		});
+		
+		//now draw the graph
+		renderChart(firstTrendPoint, lastTrendPoint, userWeightPoints);
+	} catch (error) {
+		alert("Impossibile generare il grafico")
+	}
 }
 
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs.Response;
+using WebApiFlowing.DTOs.API.Response;
 
 namespace WebApiFlowing.Controllers
 {
@@ -13,9 +13,9 @@ namespace WebApiFlowing.Controllers
     public class EstimatedDateForReachingWeightController : ControllerBase
     {
         private IUserRepository _userRepository;
-        private IWeightCalculator _weightCalculator;
+        private IWeightTrendCalculator _weightCalculator;
 
-        public EstimatedDateForReachingWeightController(IUserRepository userRepository, IWeightCalculator weightCalculator)
+        public EstimatedDateForReachingWeightController(IUserRepository userRepository, IWeightTrendCalculator weightCalculator)
         {
             _userRepository = userRepository;
             _weightCalculator = weightCalculator;
@@ -27,11 +27,11 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            var estimatedDate = _weightCalculator.EstimateTargetDate(user);
+            var estimatedTarget = _weightCalculator.EstimateTarget(user);
 
             var response = new EstimatedDateForReachingWeightResponse
             {
-                EstimatedDate = estimatedDate,
+                EstimatedDate = estimatedTarget.EstimatedDate,
                 DesiredWeightInKgs = user.DesiredWeightInKgs
             };
 

@@ -6,17 +6,17 @@ using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.BusinessLogic
 {
-    public class WeightCalculator : IWeightCalculator
+    public class WeightTrendCalculator : IWeightTrendCalculator
     {
         private IMathHelper _mathHelper;
         private const int MinimumNumberForEstimation = 2;
 
-        public WeightCalculator(IMathHelper mathHelper)
+        public WeightTrendCalculator(IMathHelper mathHelper)
         {
             _mathHelper = mathHelper;
         }
 
-        public DateTimeOffset EstimateTargetDate(User user)
+        public Target EstimateTarget(User user)
         {
             var trend = CalculateTrend(user);
 
@@ -26,10 +26,21 @@ namespace WebApiFlowing.BusinessLogic
             var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
             var estimatedDate = firstWeighingDate.AddDays((int) daysFromStarting);
 
-            return estimatedDate;
+            //check if result is reachable with current trend
+            var lastWeighingDate = user.WeightHistories.GetLastWeightingDate();
+            if (estimatedDate < lastWeighingDate)
+                throw new ArgumentOutOfRangeException("Target not reachable with current trend");
+
+            var target = new Target
+            {
+                EstimatedDate = estimatedDate,
+                Trend = trend
+            };
+
+            return target;
         }
 
-        public LinearEquation CalculateTrend(User user)
+        private LinearEquation CalculateTrend(User user)
         {
             user.WeightHistories.ShouldContainAtLeast(MinimumNumberForEstimation);
 

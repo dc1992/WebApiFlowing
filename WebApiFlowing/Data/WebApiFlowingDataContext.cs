@@ -11,6 +11,8 @@ namespace WebApiFlowing.Data
 
         public virtual DbSet<User> Users { get; set; }
 
+        public virtual DbSet<BodyMassIndexRange> BodyMassIndexRanges { get; set; }
+
         public WebApiFlowingDataContext(DbContextOptions<WebApiFlowingDataContext> options) : base(options)
         {
             SessionId = Guid.NewGuid();

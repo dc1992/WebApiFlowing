@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.BusinessLogic.Interfaces;
 using WebApiFlowing.Data.Interfaces;
-using WebApiFlowing.DTOs.Response;
+using WebApiFlowing.DTOs.API.Response;
+using WebApiFlowing.DTOs.API.Shared;
 
 namespace WebApiFlowing.Controllers
 {
@@ -13,10 +14,10 @@ namespace WebApiFlowing.Controllers
     public class FirstAndLastTrendPointsController : ControllerBase
     {
         private IUserRepository _userRepository;
-        private IWeightCalculator _weightCalculator;
+        private IWeightTrendCalculator _weightCalculator;
         private IMathHelper _mathHelper;
 
-        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightCalculator weightCalculator, IMathHelper mathHelper)
+        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightTrendCalculator weightCalculator, IMathHelper mathHelper)
         {
             _userRepository = userRepository;
             _weightCalculator = weightCalculator;
@@ -29,16 +30,15 @@ namespace WebApiFlowing.Controllers
             var user = await _userRepository.GetUserInfosBy(userGuid);
             user.ShouldNotBeNull();
 
-            var trendLinearEquation = _weightCalculator.CalculateTrend(user);
+            var estimatedTarget = _weightCalculator.EstimateTarget(user);
 
-            //find x and y of first trend point
+            //first point
             var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
-            var firstTrendPointY = _mathHelper.FindZero(trendLinearEquation);
+            var firstTrendPointY = _mathHelper.FindZero(estimatedTarget.Trend);
 
-            //find x and y of last trend point
-            var daysFromStarting = _mathHelper.FindXByY(trendLinearEquation, user.DesiredWeightInKgs);
-            var estimatedDate = firstWeighingDate.AddDays((int)daysFromStarting);
-
+            //last point
+            var estimatedDate = estimatedTarget.EstimatedDate;
+            var desiredWeightInKgs = user.DesiredWeightInKgs;
 
             var response = new FirstAndLastTrendPointsResponse
             {
@@ -50,7 +50,7 @@ namespace WebApiFlowing.Controllers
                 LastTrendPoint = new TrendPoint
                 {
                     X = estimatedDate,
-                    Y = user.DesiredWeightInKgs
+                    Y = desiredWeightInKgs
                 }
             };
 

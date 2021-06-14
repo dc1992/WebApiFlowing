@@ -8,3 +8,44 @@ curl --location --request GET 'http://localhost:60906/UserWeights?userGuid=35dac
 
 #PRIMO E ULTIMO PUNTO DELLA RETTA PER LA TENDENZA DEL PESO
 curl --location --request GET 'http://localhost:60906/FirstAndLastTrendPoints?userGuid=35dacbf7-c939-4112-aa86-bee0792e37d3'
+
+
+#PESO IDEALE
+curl --location --request GET 'http://localhost:60906/IdealWeight?userGuid=35dacbf7-c939-4112-aa86-bee0792e37d3'
+
+
+#INSERIMENTO NUOVO UTENTE
+curl --location --request POST 'http://localhost:60906/User' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Mario",
+    "surname": "Rossi",
+    "desiredWeightInKgs": 70,
+    "heightInMeters": 1.76,
+    "weightHistories": [
+        { 
+            "dateOfMeasurement": "2021-06-01",
+            "WeightInKgs": 85
+        },
+        { 
+            "dateOfMeasurement": "2021-06-02",
+            "WeightInKgs": 84
+        },
+        { 
+            "dateOfMeasurement": "2021-06-05",
+            "WeightInKgs": 82
+        },
+        { 
+            "dateOfMeasurement": "2021-06-07",
+            "WeightInKgs": 84.2
+        },
+        { 
+            "dateOfMeasurement": "2021-06-08",
+            "WeightInKgs": 83
+        },
+        { 
+            "dateOfMeasurement": "2021-06-10",
+            "WeightInKgs": 81
+        }
+    ]
+}'
