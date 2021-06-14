@@ -11,7 +11,7 @@ namespace WebApiFlowing.BusinessLogic
         private const int MinimumNumberForCalculateALinearEquation = 2,
             NumberOfDigitsAfterCommaInFunctions = 5;
 
-        public LinearEquation CalculateLinearLeastSquares(ICollection<Point> points)
+        public IMathFunction CalculateLinearLeastSquares(ICollection<Point> points)
         {
             points.ShouldContainAtLeast(MinimumNumberForCalculateALinearEquation);
 
@@ -39,22 +39,6 @@ namespace WebApiFlowing.BusinessLogic
             var linearEquation = new LinearEquation(roundedM, roundedB);
 
             return linearEquation;
-        }
-
-        public double FindXByY(LinearEquation linearEquation, double y)
-        {
-            //since y = mx + b  -->  x = (y - b)/m
-            var x = (y - linearEquation.B) / linearEquation.M;
-
-            return x;
-        }
-
-        public double FindZero(LinearEquation linearEquation)
-        {
-            //we can ignore the mx since x is zero -> y = (linearEquation.M * 0) + b
-            var y = linearEquation.B;
-
-            return y;
         }
     }
 }

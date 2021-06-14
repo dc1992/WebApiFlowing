@@ -1,4 +1,5 @@
 ﻿using System;
+using WebApiFlowing.BusinessLogic.Interfaces;
 
 namespace WebApiFlowing.DTOs.BusinessLogic
 {
@@ -6,6 +7,6 @@ namespace WebApiFlowing.DTOs.BusinessLogic
     {
         public DateTimeOffset EstimatedDate { get; set; }
 
-        public LinearEquation Trend { get; set; }
+        public IMathFunction Trend { get; set; }
     }
 }

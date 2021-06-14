@@ -5,10 +5,6 @@ namespace WebApiFlowing.BusinessLogic.Interfaces
 {
     public interface IMathHelper
     {
-        LinearEquation CalculateLinearLeastSquares(ICollection<Point> points);
-
-        double FindXByY(LinearEquation linearEquation, double y);
-
-        double FindZero(LinearEquation linearEquation);
+        IMathFunction CalculateLinearLeastSquares(ICollection<Point> points);
     }
 }

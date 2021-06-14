@@ -4,6 +4,7 @@ using FakeItEasy;
 using NUnit.Framework;
 using WebApiFlowing.Controllers;
 using WebApiFlowing.DTOs;
+using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.Test.Controllers
 {

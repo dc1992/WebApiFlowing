@@ -21,7 +21,7 @@ namespace WebApiFlowing.BusinessLogic
             var trend = CalculateTrend(user);
 
             //using the linear equation found, we can find the estimated day (X) starting from the desidered user weight (Y)
-            var daysFromStarting = _mathHelper.FindXByY(trend, user.DesiredWeightInKgs);
+            var daysFromStarting = trend.FindXByY(user.DesiredWeightInKgs);
 
             var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
             var estimatedDate = firstWeighingDate.AddDays((int) daysFromStarting);
@@ -40,7 +40,7 @@ namespace WebApiFlowing.BusinessLogic
             return target;
         }
 
-        private LinearEquation CalculateTrend(User user)
+        private IMathFunction CalculateTrend(User user)
         {
             user.WeightHistories.ShouldContainAtLeast(MinimumNumberForEstimation);
 

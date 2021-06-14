@@ -15,13 +15,11 @@ namespace WebApiFlowing.Controllers
     {
         private IUserRepository _userRepository;
         private IWeightTrendCalculator _weightCalculator;
-        private IMathHelper _mathHelper;
 
-        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightTrendCalculator weightCalculator, IMathHelper mathHelper)
+        public FirstAndLastTrendPointsController(IUserRepository userRepository, IWeightTrendCalculator weightCalculator)
         {
             _userRepository = userRepository;
             _weightCalculator = weightCalculator;
-            _mathHelper = mathHelper;
         }
 
         [HttpGet]
@@ -34,7 +32,7 @@ namespace WebApiFlowing.Controllers
 
             //first point
             var firstWeighingDate = user.WeightHistories.GetFirstWeightingDate();
-            var firstTrendPointY = _mathHelper.FindZero(estimatedTarget.Trend);
+            var firstTrendPointY = estimatedTarget.Trend.FindZero();
 
             //last point
             var estimatedDate = estimatedTarget.EstimatedDate;

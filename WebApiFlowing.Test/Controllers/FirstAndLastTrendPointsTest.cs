@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
+using WebApiFlowing.BusinessLogic;
 using WebApiFlowing.BusinessLogic.Extensions;
 using WebApiFlowing.Controllers;
 using WebApiFlowing.DTOs;
@@ -18,7 +19,7 @@ namespace WebApiFlowing.Test.Controllers
         [SetUp]
         public void Setup()
         {
-            _controller = new FirstAndLastTrendPointsController(_userRepository, _weightCalculator, _mathHelper);
+            _controller = new FirstAndLastTrendPointsController(_userRepository, _weightCalculator);
         }
 
         [Test]
@@ -55,13 +56,12 @@ namespace WebApiFlowing.Test.Controllers
             var expectedLastPointX = user.WeightHistories.GetFirstWeightingDate().AddDays(findXByYResult);
             var estimatedTarget = new Target
             {
-                Trend = new LinearEquation(10, 20),
+                Trend = new LinearEquation(10, 10),
                 EstimatedDate = expectedLastPointX
             };
 
             var expectedFirstPointY = 10;
             A.CallTo(() => _weightCalculator.EstimateTarget(user)).Returns(estimatedTarget);
-            A.CallTo(() => _mathHelper.FindZero(estimatedTarget.Trend)).Returns(expectedFirstPointY);
 
             //test
             var result = await _controller.Get(_defaultUserGuid);

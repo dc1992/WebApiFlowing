@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using WebApiFlowing.DTOs.BusinessLogic;
+using WebApiFlowing.BusinessLogic;
 
 namespace WebApiFlowing.Test
 {

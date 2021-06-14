@@ -33,7 +33,7 @@ namespace WebApiFlowing.Test.BusinessLogic
             //setup data
             var firstWeight = new WeightHistory
             {
-                DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                DateOfMeasurement = DateTimeOffset.Now.AddDays(-1),
                 WeightInKgs = 100
             };
             var secondWeight = new WeightHistory
@@ -51,19 +51,20 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
-                .Returns(10);
+            var linearEquation = new LinearEquation(-10, 100);
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>._))
+                .Returns(linearEquation);
 
             //test
             _weightCalculator.EstimateTarget(user);
 
             //asserts
-            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p)))).MustHaveHappened();
-            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, user.DesiredWeightInKgs)).MustHaveHappened();
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => ListOfPointsIsOrderedAscending(p))))
+                .MustHaveHappened();
 
             A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>.That.Matches(p => p.First().X == 0
                 && p.First().Y == firstWeight.WeightInKgs
-                && p.Skip(1).First().X == 2
+                && p.Skip(1).First().X == (secondWeight.DateOfMeasurement - firstWeight.DateOfMeasurement).Days
                 && p.Skip(1).First().Y == secondWeight.WeightInKgs))).MustHaveHappened();
         }
 
@@ -73,12 +74,12 @@ namespace WebApiFlowing.Test.BusinessLogic
             //setup data
             var user = new User
             {
-                DesiredWeightInKgs = 80,
+                DesiredWeightInKgs = 95,
                 WeightHistories = new List<WeightHistory>
                 {
                     new WeightHistory
                     {
-                        DateOfMeasurement = DateTimeOffset.Now.AddDays(-2),
+                        DateOfMeasurement = DateTimeOffset.Now.AddDays(-1),
                         WeightInKgs = 100
                     },
                     new WeightHistory
@@ -89,8 +90,9 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            A.CallTo(() => _mathHelper.FindXByY(A<LinearEquation>._, A<double>._))
-                .Returns(-1);
+            var linearEquation = new LinearEquation(-10, 100);
+            A.CallTo(() => _mathHelper.CalculateLinearLeastSquares(A<ICollection<Point>>._))
+                .Returns(linearEquation);
 
             //test
             Assert.Throws<ArgumentOutOfRangeException>(() => _weightCalculator.EstimateTarget(user));
