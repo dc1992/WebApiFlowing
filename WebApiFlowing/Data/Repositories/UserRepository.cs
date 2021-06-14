@@ -40,7 +40,7 @@ namespace WebApiFlowing.Data.Repositories
 
         public async Task<User> InsertUser(User user)
         {
-            var userData = new Data.Models.User
+            var userData = new Models.User
             {
                 Guid = Guid.NewGuid(),
                 DesiredWeightInKgs = user.DesiredWeightInKgs,
@@ -59,6 +59,7 @@ namespace WebApiFlowing.Data.Repositories
             await _dataContext.SaveChangesAsync();
 
             user.Guid = userData.Guid;
+
             return user;
         }
     }

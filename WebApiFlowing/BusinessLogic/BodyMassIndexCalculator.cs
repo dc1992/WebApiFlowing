@@ -30,7 +30,7 @@ namespace WebApiFlowing.BusinessLogic
 
             //since bmi = weight / height^2 --> weight = bmi * height^2
             var minimumWeight = idealWeightRange.MinimumBMI * Math.Pow(heightInMeters, 2);
-            var maximumWeight = (idealWeightRange.MaximumBMI ?? double.MaxValue)  * Math.Pow(heightInMeters, 2);
+            var maximumWeight = (idealWeightRange.MaximumBMI ?? double.MaxValue) * Math.Pow(heightInMeters, 2);
 
             var idealRange = new IdealWeightRange
             {

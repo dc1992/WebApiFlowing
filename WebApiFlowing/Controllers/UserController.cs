@@ -27,12 +27,13 @@ namespace WebApiFlowing.Controllers
             var insertedUser = await _userRepository.InsertUser(userToInsert);
 
             var response = GetResponse(insertedUser);
+
             return response;
         }
 
         private User GetUserToInsert(UserRequest request)
         {
-            return new User
+            var userToInsert = new User
             {
                 Name = request.Name,
                 Surname = request.Surname,
@@ -44,6 +45,8 @@ namespace WebApiFlowing.Controllers
                     WeightInKgs = wh.WeightInKgs
                 }).ToList()
             };
+
+            return userToInsert;
         }
 
         private UserResponse GetResponse(User user)
