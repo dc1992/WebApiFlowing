@@ -50,7 +50,7 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            var function = _mathHelper.CalculateLinearLeastSquares(listPoints);
+            var function = (LinearEquation)_mathHelper.CalculateLinearLeastSquares(listPoints);
 
             Assert.AreEqual(1, function.M);
             Assert.AreEqual(0, function.B);
@@ -75,7 +75,7 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            var function = _mathHelper.CalculateLinearLeastSquares(listPoints);
+            var function = (LinearEquation)_mathHelper.CalculateLinearLeastSquares(listPoints);
 
             Assert.AreEqual(-1, function.M);
             Assert.AreEqual(0, function.B);
@@ -100,7 +100,7 @@ namespace WebApiFlowing.Test.BusinessLogic
                 }
             };
 
-            var function = _mathHelper.CalculateLinearLeastSquares(listPoints);
+            var function = (LinearEquation)_mathHelper.CalculateLinearLeastSquares(listPoints);
 
             Assert.AreEqual(1, function.M);
             Assert.AreEqual(-1, function.B);
@@ -111,7 +111,7 @@ namespace WebApiFlowing.Test.BusinessLogic
         public void FindXByY_ShouldReturnExpectedValue(double m, double b, double y, double expectedX)
         {
             var linearEquation = new LinearEquation(m, b);
-            var result = _mathHelper.FindXByY(linearEquation, y);
+            var result = linearEquation.FindXByY(y);
 
             Assert.AreEqual(expectedX, result);
         }
@@ -120,7 +120,7 @@ namespace WebApiFlowing.Test.BusinessLogic
         public void FindXByY_ResultNotFound_ShouldThrow()
         {
             var linearEquation = new LinearEquation(0, 0);
-            var result = _mathHelper.FindXByY(linearEquation, 1);
+            var result = linearEquation.FindXByY(1);
 
             Assert.IsTrue(double.IsInfinity(result));
         }
@@ -132,7 +132,7 @@ namespace WebApiFlowing.Test.BusinessLogic
         public void FindZero_ShouldReturnExpectedSolution(double b, double expected)
         {
             var equation = new LinearEquation(1, b);
-            var solution = _mathHelper.FindZero(equation);
+            var solution = equation.FindZero();
 
             Assert.AreEqual(expected, solution);
         }

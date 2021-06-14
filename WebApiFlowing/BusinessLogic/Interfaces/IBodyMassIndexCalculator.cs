@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using WebApiFlowing.DTOs;
+using WebApiFlowing.DTOs.BusinessLogic;
 
 namespace WebApiFlowing.BusinessLogic.Interfaces
 {
